@@ -8,3 +8,8 @@ def index(request):
         "entries": util.list_entries()
     })
 
+def cargarentry (request, nombre):
+    return render(request, "encyclopedia/cargarentry.html", {
+        "entry": util.get_entry(nombre),
+        "titulo":nombre.upper()
+    } )
