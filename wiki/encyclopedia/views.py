@@ -73,30 +73,14 @@ def newpage (request):
                     "titulo":titulonewpage.upper(),
                     "form": busquedaform()
     } )
-
-
     return render(request, "encyclopedia/newpage.html", {
         "formtitulo": newpageform(),
         "form": busquedaform()
-    } )
-    """
-      form = newpageform(request.POST)  # Take in the data the user submitted and save it as form
-        if form.is_valid():
-            titulonewpage = form.cleaned_data["titulonewpage"].lower()
-            entries = util.list_entries()
-            a = (map(lambda x: x.lower(), entries))
-            entriesmin = list(a)
-            if (titulonewpage in entriesmin):
-                return render(request, "encyclopedia/errorentrada.html", {
-                    "form": busquedaform()
-                } )
-            else: 
-                
+    })
 
-    return render(request, "encyclopedia/newpage.html", {
+def editentry (request, nombre):
+    titulonewpage = forms.CharField(label="Complete Entry Title", initial=nombre)
+    return render(request, "encyclopedia/editentry.html", {
         "formtitulo": newpageform(),
         "form": busquedaform()
     } )
-    */
-
-    """
