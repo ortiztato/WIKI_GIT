@@ -35,3 +35,14 @@ def get_entry(nombre):
         return f.read().decode("utf-8")
     except FileNotFoundError:
         return None
+
+def get_entrybus(form):
+    """
+    Retrieves an encyclopedia entry by its title. If no such
+    entry exists, the function returns None.
+    """
+    try:
+        f = default_storage.open(f"entries/{form}.md")
+        return f.read().decode("utf-8")
+    except FileNotFoundError:
+        return None

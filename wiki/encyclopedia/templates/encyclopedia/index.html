@@ -14,3 +14,11 @@
     </ul>
 
 {% endblock %}
+
+{% block form %}
+<form action="{% url 'busqueda' %}" method="post">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit">
+    </form>
+{% endblock %}
