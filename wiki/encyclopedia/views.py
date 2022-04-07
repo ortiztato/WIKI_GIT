@@ -3,6 +3,8 @@ from django import forms
 
 from . import util
 
+
+
 class busquedaform(forms.Form):
     entradabuscada = forms.CharField(label="Search Encyclopedia")
 
@@ -35,8 +37,12 @@ def busqueda (request):
                         "form": busquedaform()
                     } )
             else:
-                return render(request, "encyclopedia/index.html", {
-                    "entries": util.list_entries(),
+                listaresultados = []
+                for entry in entriesmin:    
+                    if entradabuscada in entry:
+                        listaresultados.append(entry)
+            return render(request, "encyclopedia/resultados.html", {
+                    "entries": listaresultados,
                     "form": busquedaform()
-                    } )
+    })
     
