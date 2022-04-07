@@ -1,0 +1,24 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %}
+
+{% block body %}
+    <h1>Resultados</h1>
+
+    <ul>
+        {% for entry in entries %}
+            <li><a href="{% url 'cargarentry' entry %}">{{entry}}</a></li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
+
+{% block form %}
+<form action="{% url 'busqueda' %}" method="post">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit">
+    </form>
+{% endblock %}

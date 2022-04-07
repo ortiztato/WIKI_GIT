@@ -1,0 +1,26 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{titulo}}
+{% endblock %}
+
+{% block body %}
+    
+
+{% if entry == None %}
+    <h1>La pagina no se ha encontrado amigo</h1>
+
+{% else %}
+    <h1>{{titulo}}</h1>
+    {{entry}}
+{% endif %}
+
+{% endblock %}
+
+{% block form %}
+<form action="{% url 'busqueda' %}" method="post">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit">
+    </form>
+{% endblock %}
