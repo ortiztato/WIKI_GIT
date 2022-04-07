@@ -22,12 +22,21 @@ def cargarentry (request, nombre):
 def busqueda (request):
     if request.method == "POST":
 
-        # Take in the data the user submitted and save it as form
-        form = busquedaform(request.POST)
+        form = busquedaform(request.POST)  # Take in the data the user submitted and save it as form
         if form.is_valid():
-            entradabuscada = form.cleaned_data["entradabuscada"]
-            return render(request, "encyclopedia/cargarentry.html", {
-            "entry": util.get_entrybus(entradabuscada),
-            "titulo":entradabuscada,
-            "form": busquedaform()
-    } )
+            entradabuscada = form.cleaned_data["entradabuscada"].lower()
+            entries = util.list_entries()
+            a = (map(lambda x: x.lower(), entries))
+            entriesmin = list(a)
+            if (entradabuscada in entriesmin):
+                    return render(request, "encyclopedia/cargarentry.html", {
+                        "entry": util.get_entrybus(entradabuscada),
+                        "titulo":entradabuscada.upper(),
+                        "form": busquedaform()
+                    } )
+            else:
+                return render(request, "encyclopedia/index.html", {
+                    "entries": util.list_entries(),
+                    "form": busquedaform()
+                    } )
+    
