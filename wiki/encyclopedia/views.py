@@ -1,3 +1,5 @@
+import secrets
+
 from ctypes import sizeof
 from xml.dom.minidom import AttributeList
 from django.shortcuts import render
@@ -96,3 +98,11 @@ def editentry (request, titulo):
         "formtitulo": form1,
         "form": busquedaform()
     } )
+
+def random (request):
+    entradas = util.list_entries()
+    entradarandom = secrets.choice(entradas)
+    return render(request, "encyclopedia/cargarentry.html", {
+                    "entry": util.get_entry(entradarandom),
+                    "titulo":entradarandom.upper(),
+                    "form": busquedaform() } )
