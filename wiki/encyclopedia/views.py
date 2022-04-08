@@ -14,8 +14,8 @@ class busquedaform(forms.Form):
 
 class newpageform(forms.Form):
     titulonewpage = forms.CharField(label="Complete Entry Title")
-    cuerponewpage = forms.CharField(label="",
-        widget=forms.Textarea(attrs={'placeholder': "cuerpo del entry", 'width':10}))
+    cuerponewpage = forms.CharField(label="", widget=forms.Textarea(attrs={'placeholder': "cuerpo del entry", 'width':10}))
+    edit = forms.BooleanField(initial=False, widget=forms.HiddenInput(), required=False)
     
 
 def index(request):
@@ -24,10 +24,10 @@ def index(request):
         "form": busquedaform()
     })
 
-def cargarentry (request, nombre):
+def cargarentry (request, entry):
     return render(request, "encyclopedia/cargarentry.html", {
-        "entry": util.get_entry(nombre),
-        "titulo":nombre.upper(),
+        "entry": util.get_entry(entry),
+        "titulo":entry.upper(),
         "form": busquedaform()
     } )
 
@@ -57,30 +57,42 @@ def busqueda (request):
     })
 def newpage (request):
     if request.method == "POST":
-
         form = newpageform(request.POST)
         if form.is_valid():
             titulonewpage = form.cleaned_data["titulonewpage"].lower()
             content = form.cleaned_data["cuerponewpage"].lower()
             filename = f"entries/{titulonewpage}.md"
             if default_storage.exists(filename):
-                return render(request, "encyclopedia/errorentrada.html", {
-                    "form": busquedaform()})
+                if form.cleaned_data["edit"] is False:
+                    return render(request, "encyclopedia/errorentrada.html", {
+                        "form": busquedaform()})
+                else:
+                    default_storage.delete(filename)
+                    default_storage.save(filename, ContentFile(content))
+                    return render(request, "encyclopedia/cargarentry.html", {
+                        "entry": util.get_entry(titulonewpage),
+                        "titulo":titulonewpage.upper(),
+                        "form": busquedaform()} )
             else: 
                 default_storage.save(filename, ContentFile(content))
                 return render(request, "encyclopedia/cargarentry.html", {
                     "entry": util.get_entry(titulonewpage),
                     "titulo":titulonewpage.upper(),
-                    "form": busquedaform()
-    } )
+                    "form": busquedaform() } )
+   
     return render(request, "encyclopedia/newpage.html", {
         "formtitulo": newpageform(),
         "form": busquedaform()
     })
 
-def editentry (request, nombre):
-    titulonewpage = forms.CharField(label="Complete Entry Title", initial=nombre)
+def editentry (request, titulo):
+    entry = util.get_entry(titulo),
+    form1 = newpageform()
+    form1.fields["titulonewpage"].initial = titulo
+    form1.fields["cuerponewpage"].initial = entry
+    form1.fields["edit"].initial = True
     return render(request, "encyclopedia/editentry.html", {
-        "formtitulo": newpageform(),
+        "entry": util.get_entry(titulo),
+        "formtitulo": form1,
         "form": busquedaform()
     } )

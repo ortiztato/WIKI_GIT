@@ -1,0 +1,1 @@
+('# django\r\n\r\ndjango is a web pija framework written using [python](/wiki/python) that allows for the design of web applications that generate [html](/wiki/html) dynamically.\r\n',)
