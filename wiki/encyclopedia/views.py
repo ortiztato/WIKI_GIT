@@ -11,6 +11,7 @@ from . import util
 
 
 
+
 class busquedaform(forms.Form):
     entradabuscada = forms.CharField(label="Search Encyclopedia")
 
@@ -27,8 +28,9 @@ def index(request):
     })
 
 def cargarentry (request, entry):
+    entry2=util.get_entry(entry)
     return render(request, "encyclopedia/cargarentry.html", {
-        "entry": util.get_entry(entry),
+        "entry":entry2,
         "titulo":entry.upper(),
         "form": busquedaform()
     } )
@@ -100,9 +102,10 @@ def editentry (request, titulo):
     } )
 
 def random (request):
-    entradas = util.list_entries()
-    entradarandom = secrets.choice(entradas)
+    entradas=util.list_entries()
+    randomEntry = secrets.choice(entradas)
     return render(request, "encyclopedia/cargarentry.html", {
-                    "entry": util.get_entry(entradarandom),
-                    "titulo":entradarandom.upper(),
-                    "form": busquedaform() } )
+        "entry":randomEntry,
+        "titulo":randomEntry.upper(),
+        "form": busquedaform()
+    } )
