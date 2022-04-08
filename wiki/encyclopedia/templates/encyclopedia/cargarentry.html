@@ -11,8 +11,7 @@
     <h1>La pagina no se ha encontrado amigo</h1>
 
 {% else %}
-    <h1>{{titulo}}</h1>
-    {{entry}}
+    {{entry|safe}}
 {% endif %}
    <div><a href="{{titulo}}/edit">Edit Entry</a></div> 
 {% endblock %}

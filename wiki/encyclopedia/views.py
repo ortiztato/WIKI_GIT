@@ -1,4 +1,5 @@
 import secrets
+import markdown2
 
 from ctypes import sizeof
 from xml.dom.minidom import AttributeList
@@ -8,6 +9,7 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
 from . import util
+from markdown2 import Markdown
 
 
 
@@ -28,9 +30,11 @@ def index(request):
     })
 
 def cargarentry (request, entry):
+    markdowner = Markdown()
     entry2=util.get_entry(entry)
     return render(request, "encyclopedia/cargarentry.html", {
-        "entry":entry2,
+        "entry":markdowner.convert(entry2),
+        #"entry":entry2,
         "titulo":entry.upper(),
         "form": busquedaform()
     } )
